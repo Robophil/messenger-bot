@@ -87,13 +87,13 @@ http.createServer(bot.middleware()).listen(3000)
 
 As well, it mounts `/_status`, which will return `{"status": "ok"}` if the middleware is running. If `verify` is specified in the bot options, it will mount a handler for `GET` requests that verifies the webhook.
 
-#### `bot.sendMessage(recipient, messagingType, payload, [callback])`
+#### `bot.sendMessage(recipient, payload, [messagingType], [callback])`
 
 Sends a message with the `payload` to the target `recipient`, and calls the callback if any. Returns a promise. See [Send API](https://developers.facebook.com/docs/messenger-platform/send-api-reference#request).
 
 * `recipient` - Number: The Facebook ID of the intended recipient.
-* `messagingType` - string: One of the available Facebook [messaging_types](https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types)
 * `payload` - Object: The message payload. Should follow the [Send API format](https://developers.facebook.com/docs/messenger-platform/send-api-reference).
+* `messagingType` - (Optional) string: One of the available Facebook [messaging_types](https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types). DefaultsTo `RESPONSE`
 * `callback` - (Optional) Function: Called with `(err, info)` once the request has completed. `err` contains an error, if any, and `info` contains the response from Facebook, usually with the new message's ID.
 
 #### `bot.sendSenderAction(recipient, senderAction, [callback])`

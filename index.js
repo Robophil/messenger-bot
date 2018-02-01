@@ -37,7 +37,11 @@ class Bot extends EventEmitter {
     })
   }
 
-  sendMessage (recipient, messagingType, payload, cb) {
+  sendMessage (recipient, payload, messagingType, cb) {
+    if (typeof messagingType === 'function' && cb === undefined) {
+      cb = messagingType
+      messagingType = 'RESPONSE'
+    }
     return request({
       method: 'POST',
       uri: 'https://graph.facebook.com/v2.6/me/messages',
@@ -277,7 +281,7 @@ class Bot extends EventEmitter {
   }
 
   _handleEvent (type, event) {
-    this.emit(type, event, this.sendMessage.bind(this, event.sender.id, 'RESPONSE'), this._getActionsObject(event))
+    this.emit(type, event, this.sendMessage.bind(this, event.sender.id), this._getActionsObject(event))
   }
 }
 
