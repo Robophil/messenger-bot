@@ -1,6 +1,7 @@
 'use strict'
 const crypto = require('crypto')
 const request = require('request')
+const Buffer = require('safe-buffer')
 
 module.exports = function recognizeSong (opts, cb) {
   let attachment = opts.message.attachments[0]
@@ -32,7 +33,7 @@ module.exports = function recognizeSong (opts, cb) {
       if (err) return cb(err)
 
       if (body.status.code !== 0) {
-        return cb({message: 'NO_MATCH'})
+        return cb(new Error('NO_MATCH'))
       }
 
       let song = body.metadata.music[0]
