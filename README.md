@@ -87,11 +87,12 @@ http.createServer(bot.middleware()).listen(3000)
 
 As well, it mounts `/_status`, which will return `{"status": "ok"}` if the middleware is running. If `verify` is specified in the bot options, it will mount a handler for `GET` requests that verifies the webhook.
 
-#### `bot.sendMessage(recipient, payload, [callback])`
+#### `bot.sendMessage(recipient, messagingType, payload, [callback])`
 
 Sends a message with the `payload` to the target `recipient`, and calls the callback if any. Returns a promise. See [Send API](https://developers.facebook.com/docs/messenger-platform/send-api-reference#request).
 
 * `recipient` - Number: The Facebook ID of the intended recipient.
+* `messagingType` - string: One of the available Facebook [messaging_types](https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types)
 * `payload` - Object: The message payload. Should follow the [Send API format](https://developers.facebook.com/docs/messenger-platform/send-api-reference).
 * `callback` - (Optional) Function: Called with `(err, info)` once the request has completed. `err` contains an error, if any, and `info` contains the response from Facebook, usually with the new message's ID.
 
@@ -151,7 +152,7 @@ The underlying method used by `bot.middleware()` for the initial webhook verific
 Triggered when a message is sent to the bot.
 
 * `payload` - Object: An object containing the message event's payload from Facebook. See [Facebook's documentation](https://developers.facebook.com/docs/messenger-platform/webhook-reference#received_message) for the format.
-* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID. Example usage:
+* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID, and the **messaging_type** set to `RESPONSE`. Example usage:
 
 ```js
 bot.on('message', (payload, reply, actions) => {
@@ -166,7 +167,7 @@ bot.on('message', (payload, reply, actions) => {
 Triggered when a postback is triggered by the sender in Messenger.
 
 * `payload` - Object: An object containing the postback event's payload from Facebook. See [Facebook's documentation](https://developers.facebook.com/docs/messenger-platform/webhook-reference#postback) for the format.
-* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID. Example usage:
+* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID, and the **messaging_type** set to `RESPONSE`. Example usage:
 * `actions` - Object: An object with two functions: `setTyping(status: Boolean)`, and `markRead()`.
 
 ```js
@@ -180,7 +181,7 @@ bot.on('postback', (payload, reply, actions) => {
 Triggered when a message has been successfully delivered.
 
 * `payload` - Object: An object containing the delivery event's payload from Facebook. See [Facebook's documentation](https://developers.facebook.com/docs/messenger-platform/webhook-reference#message_delivery) for the format.
-* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID. Example usage:
+* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID, and the **messaging_type** set to `RESPONSE`. Example usage:
 * `actions` - Object: An object with two functions: `setTyping(status: Boolean)`, and `markRead()`.
 
 ```js
@@ -194,7 +195,7 @@ bot.on('delivery', (payload, reply, actions) => {
 Triggered when a user authenticates with the "Send to Messenger" plugin.
 
 * `payload` - Object: An object containing the authentication event's payload from Facebook. See [Facebook's documentation](https://developers.facebook.com/docs/messenger-platform/webhook-reference#auth) for the format.
-* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID. Example usage:
+* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID, and the **messaging_type** set to `RESPONSE`. Example usage:
 * `actions` - Object: An object with two functions: `setTyping(status: Boolean)`, and `markRead()`.
 
 ```js
@@ -208,7 +209,7 @@ bot.on('authentication', (payload, reply, actions) => {
 Triggered when an m.me link is used with a referral param and only in a case this user already has a thread with this bot (for new threads see 'postback' event)
 
 * `payload` - Object: An object containing the authentication event's payload from Facebook. See [Facebook's documentation](https://developers.facebook.com/docs/messenger-platform/webhook-reference/referral) for the format.
-* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID. Example usage:
+* `reply` - Function: A convenience function that calls `bot.sendMessage`, with the recipient automatically set to the message sender's Facebook ID, and the **messaging_type** set to `RESPONSE`. Example usage:
 * `actions` - Object: An object with two functions: `setTyping(status: Boolean)`, and `markRead()`.
 
 ```js
